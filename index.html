@@ -491,7 +491,7 @@ Input: ${raw}`;
     parsed.forEach(p=>{if(!words.find(w=>w.word.toLowerCase()===p.word.toLowerCase()))words.push({...p,date:today,wc:0});});
     ord=words.map((_,i)=>i);
     document.getElementById('addinp').value='';gen.innerHTML='';rta();toast(`✅ ${parsed.length}개 단어 추가됐어요!`);
-  }catch(e){gen.innerHTML='';toast('오류 발생! API 키를 확인해주세요.');}
+  }catch(e){gen.innerHTML='';toast('에러내용: ' + e.message); console.log(e);}
   btn.disabled=false;
 }
 /* SWIPE */
