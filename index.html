@@ -460,48 +460,75 @@ function rta(){
   list.innerHTML=tw.map(w=>`<div class="ti"><div class="tw">${w.word}</div><div class="tm">${w.mu}</div></div>`).join('');
 }
 async function addWords(){
-  const raw=document.getElementById('addinp').value.trim();
-  const apiKey=document.getElementById('apikey').value.trim();
-  if(!raw){toast('단어를 입력해주세요!');return;}
-  if(!apiKey){toast('🔑 API 키를 먼저 입력해주세요!');return;}
-  localStorage.setItem('gr63_apikey',apiKey);
-  const btn=document.getElementById('addbtn'),gen=document.getElementById('addgen');
-  btn.disabled=true;
-  gen.innerHTML='<div style="text-align:center;padding:14px;color:var(--mu);font-size:.8rem"><span class="spin"></span>GR 예문 생성 중...</div>';
-  const prompt=`You are a vocabulary card generator for a Korean student learning English through Formula 1 / George Russell content.
-Parse the input and extract vocabulary items. Return a JSON array. Each object:
-- word: string (English, lowercase)
-- pos: string
-- mu: string (Korean meaning as provided or inferred)
-- me: string (extra Korean note, 1-2 lines)
-- se: string (F1/George Russell themed sentence, wrap target word with <b> tags)
-- sk: string (Korean translation)
-ALL sentences F1/Mercedes/George Russell themed. Respond ONLY with valid JSON array, no markdown.
+  const raw = document.getElementById('addinp').value.trim();
+  const apiKey = document.getElementById('apikey').value.trim();
+  
+  if(!raw) { toast('단어를 입력해주세요!'); return; }
+  if(!apiKey) { toast('🔑 API 키를 먼저 입력해주세요!'); return; }
+  
+  localStorage.setItem('gr63_apikey', apiKey);
+  const btn = document.getElementById('addbtn'), gen = document.getElementById('addgen');
+  
+  btn.disabled = true;
+  gen.innerHTML = '<div style="text-align:center;padding:14px;color:var(--mu);font-size:.8rem"><span class="spin"></span>GR 예문 생성 중...</div>';
+
+  // 1. 구글이 좋아하는 가장 정석적인 Body 구조
+  const promptText = `You are a vocabulary card generator for a Korean student learning English through Formula 1 / George Russell content.
+Parse the input and extract vocabulary items. Return a JSON array. Each object must have:
+- word (English)
+- pos (Parts of speech)
+- mu (Korean meaning)
+- me (1-2 lines of Korean explanation)
+- se (F1/George Russell themed sentence, wrap target word in <b> tags)
+- sk (Korean translation of the sentence)
+Respond ONLY with a valid JSON array.
 Input: ${raw}`;
-  try{
-    const res=await fetch(
-      // 모델명을 'gemini-pro'로 변경했습니다. 이게 가장 호환성이 좋습니다.
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`,
-      {method:'POST',headers:{'Content-Type':'application/json'},
-       body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})}
-    );
-    const data=await res.json();
-    if(data.error) {
-       toast('에러: ' + data.error.message);
-       btn.disabled=false; gen.innerHTML=''; return;
+
+  try {
+    // 2. 가장 안정적인 v1beta 주소
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+    
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: promptText }] }]
+      })
+    });
+
+    const data = await res.json();
+
+    // 3. 에러 발생 시 숨기지 않고 팝업으로 전체 노출
+    if (data.error) {
+      console.error('Full Error:', data.error);
+      alert(`[에러 발생!] \n- 상태: ${data.error.status}\n- 원인: ${data.error.message}\n\n이 메시지를 알려주시면 바로 고쳐드릴게요!`);
+      btn.disabled = false; gen.innerHTML = ''; return;
     }
-    const text=data.candidates[0].content.parts[0].text;
+
+    // 4. 데이터 파싱 및 저장
+    const text = data.candidates[0].content.parts[0].text;
     const cleanJson = text.replace(/```json|```/g, '').trim();
-    const parsed=JSON.parse(cleanJson);
-    const today=ts();
-    parsed.forEach(p=>{if(!words.find(w=>w.word.toLowerCase()===p.word.toLowerCase()))words.push({...p,date:today,wc:0});});
-    ord=words.map((_,i)=>i);
-    document.getElementById('addinp').value='';gen.innerHTML='';rta();toast(`✅ ${parsed.length}개 단어 추가 완료!`);
-  }catch(e){
-    gen.innerHTML='';
-    toast('오류: ' + e.message);
+    const parsed = JSON.parse(cleanJson);
+    
+    const today = ts();
+    parsed.forEach(p => {
+      if (!words.find(w => w.word.toLowerCase() === p.word.toLowerCase())) {
+        words.push({ ...p, date: today, wc: 0 });
+      }
+    });
+
+    ord = words.map((_, i) => i);
+    document.getElementById('addinp').value = '';
+    gen.innerHTML = '';
+    rta(); // 화면 업데이트
+    toast(`✅ ${parsed.length}개 단어 추가 완료!`);
+    
+  } catch (e) {
+    console.error('JS Error:', e);
+    alert('시스템 오류가 발생했습니다: ' + e.message);
+  } finally {
+    btn.disabled = false;
   }
-  btn.disabled=false;
 }
 
 /* SWIPE */
