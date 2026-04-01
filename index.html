@@ -200,6 +200,7 @@ main{position:relative;z-index:1;padding:18px 14px;max-width:680px;margin:0 auto
   </div>
   <div class="page" id="page-add">
     <div class="slabel">단어 추가하기</div>
+    <input id="apikey" type="password" class="addta" style="min-height:unset;margin-bottom:6px" placeholder="🔑 Google AI Studio API 키 입력 (브라우저에 저장됨)">
     <textarea class="addta" id="addinp" placeholder="단어를 자유롭게 입력하세요!
 예: identify with 동일시하다
 줄글도 OK: 오늘 animate랑 exhausted 추가하고 싶어"></textarea>
@@ -459,7 +460,10 @@ function rta(){
 }
 async function addWords(){
   const raw=document.getElementById('addinp').value.trim();
+  const apiKey=document.getElementById('apikey').value.trim();
   if(!raw){toast('단어를 입력해주세요!');return;}
+  if(!apiKey){toast('🔑 API 키를 먼저 입력해주세요!');return;}
+  localStorage.setItem('gr63_apikey',apiKey);
   const btn=document.getElementById('addbtn'),gen=document.getElementById('addgen');
   btn.disabled=true;
   gen.innerHTML='<div style="text-align:center;padding:14px;color:var(--mu);font-size:.8rem"><span class="spin"></span>GR 예문 생성 중...</div>';
@@ -474,16 +478,19 @@ Parse the input and extract vocabulary items. Return a JSON array. Each object:
 ALL sentences F1/Mercedes/George Russell themed. Respond ONLY with valid JSON array, no markdown.
 Input: ${raw}`;
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1500,messages:[{role:'user',content:prompt}]})});
+    const res=await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+      {method:'POST',headers:{'Content-Type':'application/json'},
+       body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})}
+    );
     const data=await res.json();
-    const text=data.content.map(c=>c.text||'').join('');
+    const text=data.candidates[0].content.parts[0].text;
     const parsed=JSON.parse(text.replace(/```json|```/g,'').trim());
     const today=ts();
     parsed.forEach(p=>{if(!words.find(w=>w.word.toLowerCase()===p.word.toLowerCase()))words.push({...p,date:today,wc:0});});
     ord=words.map((_,i)=>i);
     document.getElementById('addinp').value='';gen.innerHTML='';rta();toast(`✅ ${parsed.length}개 단어 추가됐어요!`);
-  }catch(e){gen.innerHTML='';toast('오류가 발생했어요. 다시 시도해주세요.');}
+  }catch(e){gen.innerHTML='';toast('오류 발생! API 키를 확인해주세요.');}
   btn.disabled=false;
 }
 /* SWIPE */
@@ -496,6 +503,8 @@ msc.addEventListener('touchend',e=>{
   if(Math.abs(dx)>=Math.abs(dy)){if(dx<0)mv(1);else mv(-1);}else flipMain();
 },{passive:true});
 /* INIT */
+const saved=localStorage.getItem('gr63_apikey');
+if(saved)document.getElementById('apikey').value=saved;
 rs();ubdg();
 </script>
 </body>
