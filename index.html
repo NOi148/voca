@@ -480,12 +480,20 @@ ALL sentences F1/Mercedes/George Russell themed. Respond ONLY with valid JSON ar
 Input: ${raw}`;
   try{
     const res=await fetch(
-      // 주소를 v1beta에서 v1으로 바꿨습니다!
+      // 주소를 v1으로, 모델을 gemini-1.5-flash로 고정했습니다.
       `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
       {method:'POST',headers:{'Content-Type':'application/json'},
        body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})}
     );
     const data=await res.json();
+    
+    // 혹시라도 에러가 나면 팝업 대신 토스트로 알려줌
+    if(data.error) {
+       console.error(data.error);
+       toast('에러: ' + data.error.message);
+       btn.disabled=false; gen.innerHTML=''; return;
+    }
+
     const text=data.candidates[0].content.parts[0].text;
     const parsed=JSON.parse(text.replace(/```json|```/g,'').trim());
     const today=ts();
@@ -494,12 +502,11 @@ Input: ${raw}`;
     document.getElementById('addinp').value='';gen.innerHTML='';rta();toast(`✅ ${parsed.length}개 단어 추가됐어요!`);
   }catch(e){
     gen.innerHTML='';
-    // 다시 원래대로 토스트 메시지만 띄우도록 바꿨습니다.
     toast('오류 발생! API 키를 확인해주세요.');
+    console.log(e);
   }
   btn.disabled=false;
 }
-
 /* SWIPE */
 let tx=0,ty=0;
 const msc=document.getElementById('mscene');
