@@ -468,6 +468,7 @@ async function addWords(){
   const btn=document.getElementById('addbtn'),gen=document.getElementById('addgen');
   btn.disabled=true;
   gen.innerHTML='<div style="text-align:center;padding:14px;color:var(--mu);font-size:.8rem"><span class="spin"></span>GR 예문 생성 중...</div>';
+  
   const prompt=`You are a vocabulary card generator for a Korean student learning English through Formula 1 / George Russell content.
 Parse the input and extract vocabulary items. Return a JSON array. Each object:
 - word: string (English, lowercase)
@@ -478,32 +479,50 @@ Parse the input and extract vocabulary items. Return a JSON array. Each object:
 - sk: string (Korean translation)
 ALL sentences F1/Mercedes/George Russell themed. Respond ONLY with valid JSON array, no markdown.
 Input: ${raw}`;
+
   try{
     const res=await fetch(
-      // 여기 모델명을 'gemini-1.5-flash-latest'로 수정했습니다.
-      `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`,
-      {method:'POST',headers:{'Content-Type':'application/json'},
-       body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})}
+      // 가장 표준적인 v1beta 주소로 다시 세팅했습니다.
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+      {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})
+      }
     );
+    
     const data=await res.json();
     
+    // 에러 발생 시 팝업 대신 하단 토스트에 진짜 이유를 띄웁니다.
     if(data.error) {
-       toast('에러: ' + data.error.message);
+       toast('에러 발생: ' + data.error.message);
        btn.disabled=false; gen.innerHTML=''; return;
     }
 
     const text=data.candidates[0].content.parts[0].text;
-    const parsed=JSON.parse(text.replace(/```json|```/g,'').trim());
+    const cleanJson=text.replace(/```json|```/g,'').trim();
+    const parsed=JSON.parse(cleanJson);
+    
     const today=ts();
-    parsed.forEach(p=>{if(!words.find(w=>w.word.toLowerCase()===p.word.toLowerCase()))words.push({...p,date:today,wc:0});});
+    parsed.forEach(p=>{
+      if(!words.find(w=>w.word.toLowerCase()===p.word.toLowerCase())){
+        words.push({...p,date:today,wc:0});
+      }
+    });
+    
     ord=words.map((_,i)=>i);
-    document.getElementById('addinp').value='';gen.innerHTML='';rta();toast(`✅ ${parsed.length}개 단어 추가됐어요!`);
+    document.getElementById('addinp').value='';
+    gen.innerHTML='';
+    rta();
+    toast(`✅ ${parsed.length}개 단어 추가 완료!`);
   }catch(e){
     gen.innerHTML='';
-    toast('오류 발생! API 키나 모델 설정을 확인해주세요.');
+    toast('오류: ' + e.message);
+    console.error(e);
   }
   btn.disabled=false;
 }
+
 /* SWIPE */
 let tx=0,ty=0;
 const msc=document.getElementById('mscene');
