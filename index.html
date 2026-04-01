@@ -485,13 +485,23 @@ Input: ${raw}`;
        body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})}
     );
     const data=await res.json();
+    
+    // 이 부분이 추가되었습니다 (에러 상세 확인용)
+    if(data.error) {
+      throw new Error(data.error.message);
+    }
+    
     const text=data.candidates[0].content.parts[0].text;
     const parsed=JSON.parse(text.replace(/```json|```/g,'').trim());
     const today=ts();
     parsed.forEach(p=>{if(!words.find(w=>w.word.toLowerCase()===p.word.toLowerCase()))words.push({...p,date:today,wc:0});});
     ord=words.map((_,i)=>i);
     document.getElementById('addinp').value='';gen.innerHTML='';rta();toast(`✅ ${parsed.length}개 단어 추가됐어요!`);
-  }catch(e){gen.innerHTML='';toast('에러내용: ' + e.message); console.log(e);}
+  }catch(e){
+    gen.innerHTML='';
+    // 여기를 고쳤습니다. 이제 "API 키 확인" 대신 "진짜 에러 내용"이 팝업으로 뜹니다.
+    alert('진짜 에러 원인: ' + e.message); 
+  }
   btn.disabled=false;
 }
 /* SWIPE */
