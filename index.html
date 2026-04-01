@@ -480,45 +480,30 @@ ALL sentences F1/Mercedes/George Russell themed. Respond ONLY with valid JSON ar
 Input: ${raw}`;
   try{
     const res=await fetch(
-      // [핵심] v1beta 주소와 gemini-1.5-flash 모델의 조합이 가장 안정적입니다.
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
-      {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})
-      }
+      // 모델명을 'gemini-pro'로 변경했습니다. 이게 가장 호환성이 좋습니다.
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`,
+      {method:'POST',headers:{'Content-Type':'application/json'},
+       body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})}
     );
     const data=await res.json();
-    
-    // 에러 발생 시 상세 내용을 토스트로 띄움
     if(data.error) {
        toast('에러: ' + data.error.message);
        btn.disabled=false; gen.innerHTML=''; return;
     }
-
     const text=data.candidates[0].content.parts[0].text;
-    // JSON 파싱 시 생길 수 있는 오차를 줄이기 위해 trim()과 replace 강화
     const cleanJson = text.replace(/```json|```/g, '').trim();
     const parsed=JSON.parse(cleanJson);
-    
     const today=ts();
-    parsed.forEach(p=>{
-      if(!words.find(w=>w.word.toLowerCase()===p.word.toLowerCase())) {
-        words.push({...p,date:today,wc:0});
-      }
-    });
+    parsed.forEach(p=>{if(!words.find(w=>w.word.toLowerCase()===p.word.toLowerCase()))words.push({...p,date:today,wc:0});});
     ord=words.map((_,i)=>i);
-    document.getElementById('addinp').value='';
-    gen.innerHTML='';
-    rta();
-    toast(`✅ ${parsed.length}개 단어 추가됐어요!`);
+    document.getElementById('addinp').value='';gen.innerHTML='';rta();toast(`✅ ${parsed.length}개 단어 추가 완료!`);
   }catch(e){
     gen.innerHTML='';
     toast('오류: ' + e.message);
-    console.error(e);
   }
   btn.disabled=false;
 }
+
 /* SWIPE */
 let tx=0,ty=0;
 const msc=document.getElementById('mscene');
