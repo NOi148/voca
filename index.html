@@ -1,238 +1,578 @@
 <!DOCTYPE html>
+
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GR63 VOCAB ULTIMATE</title>
+<title>GR63 단어장</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#09090f;--card:#18181f;--bd:#252530;--ac:#00d4ff;--ac2:#ff2d55;--sv:#b0b8c8;--tx:#e8eaf0;--mu:#5a5a72;--ok:#00e676;--wn:#ffab00;}
 *{box-sizing:border-box;margin:0;padding:0;}
-body{background:var(--bg);color:var(--tx);font-family:'Noto Sans KR',sans-serif;min-height:100vh;}
-header{position:sticky;top:0;z-index:100;background:rgba(9,9,15,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--bd);padding:0 15px;display:flex;align-items:center;justify-content:space-between;height:55px;}
-.logo{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:3px;color:var(--ac);}
-.logo span{color:var(--ac2);}
-nav{display:flex;gap:5px;}
-.nb{background:none;border:none;cursor:pointer;color:var(--mu);font-size:.75rem;padding:8px;border-radius:6px;}
+body{background:var(--bg);color:var(--tx);font-family:'Noto Sans KR',sans-serif;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:linear-gradient(rgba(0,212,255,.025)1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,.025)1px,transparent 1px);
+  background-size:40px 40px;}
+header{position:sticky;top:0;z-index:100;background:rgba(9,9,15,.93);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--bd);padding:0 14px;display:flex;align-items:center;justify-content:space-between;height:52px;}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:1.45rem;letter-spacing:3px;
+  background:linear-gradient(90deg,var(--ac),var(--sv));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.logo span{-webkit-text-fill-color:var(--ac2);}
+nav{display:flex;gap:2px;}
+.nb{background:none;border:none;cursor:pointer;color:var(--mu);font-family:'Noto Sans KR',sans-serif;
+  font-size:.72rem;font-weight:500;padding:5px 8px;border-radius:6px;transition:all .2s;position:relative;}
+.nb:hover{color:var(--tx);background:var(--card);}
 .nb.on{color:var(--ac);background:rgba(0,212,255,.1);}
-main{padding:20px 15px;max-width:600px;margin:0 auto;}
+.bdg{position:absolute;top:1px;right:1px;background:var(--ac2);color:#fff;font-size:.54rem;font-weight:700;
+  min-width:14px;height:14px;border-radius:7px;display:flex;align-items:center;justify-content:center;padding:0 3px;}
+main{position:relative;z-index:1;padding:18px 14px;max-width:680px;margin:0 auto;}
 .page{display:none;}.page.on{display:block;}
-.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;}
-.stit{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:var(--sv);}
-.prog{height:3px;background:var(--bd);border-radius:2px;margin-bottom:15px;overflow:hidden;}
-.pb{height:100%;background:var(--ac);transition:width .3s;}
-.scene{perspective:1000px;margin-bottom:20px;}
-.flipper{position:relative;width:100%;min-height:300px;transform-style:preserve-3d;transition:0.6s;cursor:pointer;}
+.prog{height:3px;background:var(--bd);border-radius:2px;margin-bottom:16px;overflow:hidden;}
+.pb{height:100%;background:linear-gradient(90deg,var(--ac),#0099cc);border-radius:2px;transition:width .4s;}
+/* FLIP */
+.scene{perspective:1200px;margin-bottom:12px;}
+.flipper{position:relative;width:100%;min-height:285px;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,0,.2,1);cursor:pointer;}
 .flipper.f{transform:rotateY(180deg);}
-.face{position:absolute;inset:0;border-radius:15px;backface-visibility:hidden;display:flex;flex-direction:column;padding:30px;border:1px solid var(--bd);background:var(--card);}
-.fr{align-items:center;justify-content:center;}
-.bk{transform:rotateY(180deg);border-color:var(--ac);}
-.wbig{font-size:2.2rem;font-weight:700;color:var(--ac);text-align:center;}
-.bword{font-size:1.4rem;font-weight:700;color:var(--ac);margin-bottom:10px;}
-.mmain{font-size:1rem;font-weight:600;margin-bottom:15px;border-left:4px solid var(--ac2);padding-left:10px;}
-.sbox{background:rgba(255,255,255,0.03);padding:15px;border-radius:10px;flex:1;}
-.sen{font-size:.9rem;line-height:1.6;color:var(--sv);margin-bottom:10px;}
-.sen b{color:var(--ac);}
-.skr{font-size:.8rem;color:var(--mu);border-top:1px solid var(--bd);padding-top:10px;display:none;}.skr.on{display:block;}
-.vrow{display:flex;gap:10px;margin-top:10px;}
-.vb{flex:1;padding:12px;border-radius:10px;font-weight:700;cursor:pointer;border:none;font-family:inherit;}
-.vknow{background:rgba(0,230,118,0.15);color:var(--ok);border:1px solid var(--ok);}
-.vno{background:rgba(255,45,85,0.15);color:var(--ac2);border:1px solid var(--ac2);}
-.folder{background:var(--card);border:1px solid var(--bd);border-radius:12px;margin-bottom:10px;overflow:hidden;}
-.fhdr{padding:15px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;}
-.fbody{display:none;padding:15px;border-top:1px solid var(--bd);background:rgba(0,0,0,0.2);}
+.face{position:absolute;inset:0;border-radius:14px;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden;min-height:285px;}
+.fr{background:var(--card);border:1px solid var(--bd);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 20px;transition:border-color .3s;}
+.fr:hover{border-color:rgba(0,212,255,.3);}
+.fr::before{content:'GR';position:absolute;right:-5px;top:-10px;font-family:'Bebas Neue',sans-serif;font-size:5.5rem;color:rgba(0,212,255,.04);pointer-events:none;}
+.fhint{font-size:.63rem;color:var(--mu);margin-bottom:16px;letter-spacing:1px;text-transform:uppercase;display:flex;align-items:center;gap:7px;}
+.fhint::before,.fhint::after{content:'';display:block;width:16px;height:1px;background:var(--bd);}
+.wbig{font-family:'Noto Sans KR',sans-serif;font-size:clamp(1.6rem,5.5vw,2.5rem);font-weight:700;color:var(--ac);text-align:center;line-height:1.2;}
+.wpsm{font-size:.67rem;color:var(--mu);margin-top:7px;letter-spacing:1px;}
+.taph{margin-top:20px;font-size:.67rem;color:var(--mu);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:.35}50%{opacity:.9}}
+.bk{background:var(--card);border:1px solid rgba(0,212,255,.18);box-shadow:0 0 18px rgba(0,212,255,.05);transform:rotateY(180deg);padding:20px;display:flex;flex-direction:column;min-height:285px;}
+.bword{font-size:1.2rem;font-weight:700;color:var(--ac);margin-bottom:2px;}
+.bpos{font-size:.65rem;color:var(--mu);margin-bottom:10px;letter-spacing:1px;}
+.mmain{font-size:.96rem;font-weight:600;color:var(--tx);border-left:3px solid var(--ac);padding-left:9px;margin-bottom:4px;}
+.mextra{font-size:.74rem;color:var(--mu);padding-left:12px;line-height:1.6;}
+.sbox{margin-top:11px;background:rgba(0,212,255,.04);border:1px solid rgba(0,212,255,.1);border-radius:9px;padding:11px 13px;flex:1;}
+.sen{font-size:.82rem;line-height:1.7;color:var(--sv);}
+.sen b{color:var(--ac);font-weight:700;}
+.skr{font-size:.73rem;color:var(--mu);line-height:1.7;margin-top:7px;border-top:1px solid var(--bd);padding-top:7px;display:none;}
+.skr.on{display:block;}
+.tkrb{margin-top:7px;background:none;border:1px solid var(--bd);color:var(--mu);font-family:'Noto Sans KR',sans-serif;font-size:.69rem;cursor:pointer;border-radius:6px;padding:3px 9px;transition:all .2s;}
+.tkrb:hover{border-color:var(--ac);color:var(--ac);}
+/* NAV */
+.cnav{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px;}
+.arr{background:var(--card);border:1px solid var(--bd);color:var(--tx);cursor:pointer;border-radius:8px;padding:7px 16px;font-family:'Noto Sans KR',sans-serif;font-size:.77rem;font-weight:500;transition:all .2s;}
+.arr:hover{border-color:var(--ac);color:var(--ac);}
+.cnt{font-size:.77rem;color:var(--mu);min-width:54px;text-align:center;}
+.srow{display:flex;justify-content:center;margin-bottom:11px;}
+.sbtn{background:none;border:1px solid var(--bd);color:var(--mu);font-family:'Noto Sans KR',sans-serif;font-size:.75rem;font-weight:500;padding:5px 15px;border-radius:20px;cursor:pointer;transition:all .2s;}
+.sbtn:hover{border-color:var(--ac);color:var(--ac);}
+.sbtn.on{background:rgba(0,212,255,.1);border-color:var(--ac);color:var(--ac);}
+/* VERDICT */
+.vrow{display:flex;gap:7px;}
+.vb{flex:1;padding:10px 4px;border-radius:10px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;font-size:.79rem;font-weight:700;transition:all .2s;}
+.vknow{background:rgba(0,230,118,.08);border:1px solid rgba(0,230,118,.25);color:var(--ok);}
+.vknow:hover{background:rgba(0,230,118,.18);}
+.vhard{background:rgba(255,171,0,.07);border:1px solid rgba(255,171,0,.22);color:var(--wn);}
+.vhard:hover{background:rgba(255,171,0,.15);}
+.vno{background:rgba(255,45,85,.07);border:1px solid rgba(255,45,85,.22);color:var(--ac2);}
+.vno:hover{background:rgba(255,45,85,.15);}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px;}
+.stit{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:2px;color:var(--sv);}
+.dtag{font-size:.68rem;color:var(--mu);background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:3px 10px;}
+.empty{text-align:center;padding:56px 0;color:var(--mu);font-size:.86rem;line-height:1.8;}
+.empty .ico{font-size:2.2rem;margin-bottom:10px;}
+.slabel{font-family:'Bebas Neue',sans-serif;font-size:1.05rem;letter-spacing:2px;color:var(--sv);margin-bottom:13px;}
+/* FOLDER */
+.folder{background:var(--card);border:1px solid var(--bd);border-radius:13px;overflow:hidden;margin-bottom:9px;transition:border-color .25s;}
+.folder:hover{border-color:rgba(0,212,255,.2);}
+.fhdr{display:flex;align-items:center;justify-content:space-between;padding:13px 15px;cursor:pointer;user-select:none;}
+.fleft{display:flex;align-items:center;gap:10px;}
+.fico{font-size:1.25rem;}
+.fdate{font-size:.92rem;font-weight:600;color:var(--tx);}
+.fmeta{font-size:.69rem;color:var(--mu);margin-top:2px;}
+.fchev{font-size:.67rem;color:var(--mu);transition:transform .25s;}
+.fchev.open{transform:rotate(90deg);}
+.fbody{border-top:1px solid var(--bd);padding:15px;display:none;}
 .fbody.open{display:block;}
-.mrow{display:flex;gap:8px;margin-bottom:15px;}
-.mbtn{flex:1;padding:10px;border-radius:8px;font-size:.8rem;font-weight:700;cursor:pointer;border:none;background:var(--bd);color:var(--tx);}
-.mbtn.blue{background:rgba(0,212,255,0.2);color:var(--ac);}
-.witem{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
-.addta{width:100%;min-height:200px;background:var(--card);border:1px solid var(--bd);color:#fff;padding:15px;border-radius:10px;margin-bottom:10px;}
-.addbtn{width:100%;padding:15px;background:var(--ac);color:#000;border:none;border-radius:10px;font-weight:700;cursor:pointer;}
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ac);color:#000;padding:8px 20px;border-radius:30px;font-size:.8rem;opacity:0;transition:0.3s;z-index:1000;}
-.toast.show{opacity:1;}
+.mrow{display:flex;gap:9px;margin-bottom:13px;}
+.mbtn{flex:1;padding:12px;border-radius:11px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;font-size:.81rem;font-weight:700;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:4px;border:none;}
+.ms{background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.25)!important;color:var(--ac);}
+.ms:hover{background:rgba(0,212,255,.2);}
+.mt{background:rgba(255,171,0,.08);border:1px solid rgba(255,171,0,.22)!important;color:var(--wn);}
+.mt:hover{background:rgba(255,171,0,.16);}
+.mico{font-size:1.25rem;}
+/* WORD LIST */
+.wlist{display:flex;flex-direction:column;gap:6px;}
+.witem{background:rgba(255,255,255,.03);border:1px solid var(--bd);border-radius:8px;padding:8px 11px;display:flex;align-items:center;justify-content:space-between;transition:border-color .2s;}
+.witem:hover{border-color:rgba(0,212,255,.2);}
+.witem.ww{border-left:3px solid var(--ac2);}
+.wword{font-weight:700;color:var(--ac);font-size:.89rem;}
+.wmean{font-size:.72rem;color:var(--mu);margin-top:1px;}
+.wtag{font-size:.58rem;background:rgba(255,45,85,.12);color:var(--ac2);border-radius:3px;padding:1px 5px;margin-left:4px;}
+.wdel{background:none;border:none;cursor:pointer;color:var(--mu);font-size:.86rem;padding:3px;border-radius:4px;transition:color .2s;}
+.wdel:hover{color:var(--ac2);}
+.bbtn{background:none;border:none;cursor:pointer;color:var(--mu);font-family:'Noto Sans KR',sans-serif;font-size:.76rem;display:flex;align-items:center;gap:4px;padding:0;margin-bottom:13px;transition:color .2s;}
+.bbtn:hover{color:var(--ac);}
+/* QUIZ */
+.qprog{font-size:.69rem;color:var(--mu);margin-bottom:8px;}
+.qq{font-size:.98rem;font-weight:600;color:var(--tx);margin-bottom:13px;line-height:1.6;}
+.qq b{color:var(--ac);font-size:1.25rem;}
+.qq small{font-size:.68rem;color:var(--mu);font-weight:400;margin-left:5px;}
+.qopts{display:flex;flex-direction:column;gap:7px;}
+.qopt{background:rgba(255,255,255,.04);border:1px solid var(--bd);border-radius:10px;padding:11px 13px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;font-size:.83rem;text-align:left;color:var(--tx);transition:all .2s;font-weight:500;}
+.qopt:hover:not(:disabled){border-color:rgba(0,212,255,.3);background:rgba(0,212,255,.06);color:var(--ac);}
+.qopt.qok{border-color:var(--ok)!important;background:rgba(0,230,118,.12)!important;color:var(--ok)!important;}
+.qopt.qno{border-color:var(--ac2)!important;background:rgba(255,45,85,.1)!important;color:var(--ac2)!important;}
+.qnxt{margin-top:11px;width:100%;background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.25);color:var(--ac);font-family:'Noto Sans KR',sans-serif;font-size:.83rem;font-weight:700;padding:11px;border-radius:10px;cursor:pointer;transition:all .2s;}
+.qnxt:hover{background:rgba(0,212,255,.18);}
+.qdone{text-align:center;padding:26px 0;}
+.qscore{font-family:'Bebas Neue',sans-serif;font-size:2.6rem;letter-spacing:2px;color:var(--ac);}
+.qmsg{font-size:.81rem;color:var(--mu);margin-top:7px;line-height:1.6;}
+.qrst{margin-top:13px;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.3);color:var(--ac);font-family:'Noto Sans KR',sans-serif;font-size:.83rem;font-weight:700;padding:10px 26px;border-radius:10px;cursor:pointer;transition:all .2s;}
+.qrst:hover{background:rgba(0,212,255,.2);}
+/* ADD */
+.add-label{font-size:.72rem;color:var(--mu);}
+.addhint2{font-size:.78rem;color:var(--mu);margin-bottom:10px;line-height:1.6;}
+.add-example{background:rgba(0,212,255,.04);border:1px solid rgba(0,212,255,.1);border-radius:9px;padding:11px 13px;margin-bottom:12px;display:flex;flex-direction:column;gap:5px;}
+.ex-line{font-size:.72rem;color:var(--mu);line-height:1.5;}
+.ex-line span{color:var(--sv);}
+.ex-dim{color:var(--mu)!important;font-size:.68rem;}
+.add-inp{background:var(--card);border:1px solid var(--bd);color:var(--tx);border-radius:9px;padding:10px 13px;font-family:'Noto Sans KR',sans-serif;font-size:.84rem;outline:none;transition:border-color .2s;width:100%;}
+.add-inp:focus{border-color:var(--ac);}
+.add-inp::placeholder{color:#3a3a50;}
+.addta{resize:vertical;line-height:1.7;}
+.addbtn{width:100%;margin-top:9px;padding:11px;background:linear-gradient(90deg,rgba(0,212,255,.13),rgba(0,212,255,.07));border:1px solid rgba(0,212,255,.28);color:var(--ac);border-radius:10px;font-family:'Noto Sans KR',sans-serif;font-size:.83rem;font-weight:700;cursor:pointer;transition:all .2s;}
+.addbtn:hover{background:rgba(0,212,255,.2);}
+.ti{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:8px 12px;margin-bottom:5px;}
+.tw{font-weight:700;color:var(--ac);font-size:.86rem;}
+.tm{font-size:.71rem;color:var(--mu);}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(14px);background:var(--card);border:1px solid var(--bd);color:var(--tx);font-size:.77rem;padding:8px 16px;border-radius:20px;opacity:0;transition:all .28s;z-index:999;pointer-events:none;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
 </head>
 <body>
-
 <header>
   <div class="logo">GR<span>63</span> VOCAB</div>
   <nav>
-    <button class="nb on" onclick="goPage('study',this)">학습</button>
-    <button class="nb" onclick="goPage('archive',this)">보관함</button>
-    <button class="nb" onclick="goPage('add',this)">추가</button>
+    <button class="nb on" onclick="goPage('study',this)">📚 학습</button>
+    <button class="nb" onclick="goPage('review',this)">🔥 오답<span class="bdg" id="rvbdg" style="display:none"></span></button>
+    <button class="nb" onclick="goPage('archive',this)">🗂 보관함</button>
+    <button class="nb" onclick="goPage('add',this)">➕ 추가</button>
   </nav>
 </header>
-
 <main>
   <div class="page on" id="page-study">
-    <div class="top"><div class="stit" id="study-mode-title">RANDOM STUDY</div><div id="study-count" style="font-size:0.8rem;color:var(--mu);"></div></div>
+    <div class="top">
+      <div class="stit">오늘의 단어</div>
+      <div class="dtag" id="tlabel"></div>
+    </div>
     <div class="prog"><div class="pb" id="mprog"></div></div>
-    <div class="scene">
-      <div class="flipper" id="mflip" onclick="this.classList.toggle('f')">
-        <div class="face fr"><div class="wbig" id="fw">단어를 추가하세요</div></div>
+    <div class="scene" id="mscene">
+      <div class="flipper" id="mflip" onclick="flipMain()">
+        <div class="face fr">
+          <div class="fhint">단어</div>
+          <div class="wbig" id="fw"></div>
+          <div class="wpsm" id="fp"></div>
+          <div class="taph">👆 탭해서 뜻 보기</div>
+        </div>
         <div class="face bk">
           <div class="bword" id="fbw"></div>
+          <div class="bpos" id="fbp"></div>
           <div class="mmain" id="fbm"></div>
+          <div class="mextra" id="fbe"></div>
           <div class="sbox">
             <div class="sen" id="fbs"></div>
             <div class="skr" id="fbsk"></div>
-            <button class="mbtn" style="margin-top:10px;width:auto;" onclick="event.stopPropagation();document.getElementById('fbsk').classList.toggle('on')">해석 보기</button>
+            <button class="tkrb" id="fbtkr" onclick="event.stopPropagation();tkr('fbsk','fbtkr')">🇰🇷 한글 번역 보기</button>
           </div>
         </div>
       </div>
     </div>
+    <div class="cnav">
+      <button class="arr" onclick="mv(-1)">← 이전</button>
+      <span class="cnt" id="mcnt"></span>
+      <button class="arr" onclick="mv(1)">다음 →</button>
+    </div>
+    <div class="srow"><button class="sbtn" id="sfbtn" onclick="toggleShuffle()">🔀 섞기</button></div>
     <div class="vrow">
-      <button class="vb vknow" onclick="mark(true)">알아요</button>
-      <button class="vb vno" onclick="mark(false)">몰라요</button>
+      <button class="vb vknow" onclick="mark('know')">✅ 알아요</button>
+      <button class="vb vhard" onclick="mark('hard')">😅 어려워요</button>
+      <button class="vb vno" onclick="mark('no')">❌ 몰라요</button>
     </div>
   </div>
-
+  <div class="page" id="page-review"><div id="rvcont"></div></div>
   <div class="page" id="page-archive">
-    <div class="stit" style="margin-bottom:15px;">DATE ARCHIVE</div>
+    <div class="slabel">🗂 날짜별 단어 보관함</div>
     <div id="arclist"></div>
   </div>
-
   <div class="page" id="page-add">
-    <div class="stit" style="margin-bottom:10px;">ADD NEW WORDS</div>
-    <textarea class="addta" id="addinp" placeholder="단어 뜻 예문 해석 (한 줄에 하나씩)"></textarea>
-    <button class="addbtn" onclick="processAdd()">단어장 업데이트 🏁</button>
+    <div class="slabel">단어 추가하기</div>
+    <div class="addhint2">줄바꿈 또는 <code>/</code> 로 구분해서 자유롭게 입력하세요!</div>
+    <div class="add-example">
+      <div class="ex-line">뜻 직접 입력 → <span>fluctuate / 변동하다 / Tyre temps fluctuate in Monaco. / 타이어 온도가 변동한다.</span></div>
+      <div class="ex-line">줄바꿈도 OK → <span>process<br>처리하다<br>Russell can process data mid-battle.</span></div>
+      <div class="ex-line">단어만 → <span>ambiguous</span> <span class="ex-dim">(API 키 있으면 뜻+예문 자동 생성!)</span></div>
+    </div>
+    <textarea class="add-inp addta" id="addinp" rows="4" placeholder="단어 입력..."></textarea>
+    <div style="margin-top:10px">
+      <div class="add-label" style="font-size:.7rem;color:var(--mu);margin-bottom:5px">🔑 Anthropic API 키 (단어만 입력 시 자동생성용, 선택사항)</div>
+      <input class="add-inp" id="apikey" type="password" placeholder="sk-ant-..." autocomplete="off"/>
+    </div>
+    <button class="addbtn" id="addbtn" onclick="addWord()">➕ 단어 추가</button>
+    <div id="tadded" style="margin-top:20px;display:none"><div class="slabel">오늘 추가한 단어</div><div id="tlist"></div></div>
   </div>
 </main>
-
 <div class="toast" id="toast"></div>
-
 <script>
-let words = JSON.parse(localStorage.getItem('gr_words')) || [];
-let currentSessionWords = [];
-let ci = 0;
-
-function ts() { return new Date().toISOString().slice(0,10); }
-function save() { localStorage.setItem('gr_words', JSON.stringify(words)); }
-function toast(m) { const t=document.getElementById('toast'); t.textContent=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2000); }
-
-function goPage(id, btn) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
-  document.querySelectorAll('.nb').forEach(b => b.classList.remove('on'));
-  document.getElementById('page-' + id).classList.add('on');
-  if(btn) btn.classList.add('on');
-  if(id === 'archive') renderArchive();
-  if(id === 'study' && currentSessionWords.length === 0) startStudy(words, "ALL WORDS");
+const W=[
+{word:"identify with",pos:"phrasal v.",mu:"동일시하다",me:"(어떤 사람/상황에) 공감하다, 자신을 동일시하다",se:"George Russell said fans often <b>identify with</b> him because of his long journey from Formula 2 to a race winner.",sk:"조지 러셀은 팬들이 F2부터 레이스 우승까지의 긴 여정 때문에 자신과 동일시하는 경우가 많다고 말했다."},
+{word:"animate",pos:"v.",mu:"생기를 불어넣다",me:"활기차게 하다 / (형) 살아있는, 생기 있는",se:"A podium finish seemed to <b>animate</b> Russell's entire team, sending waves of energy through the Mercedes garage.",sk:"포디엄 피니시는 러셀의 팀 전체에 생기를 불어넣는 것 같았고, 메르세데스 차고 전체에 활력이 넘쳤다."},
+{word:"exhausted",pos:"adj.",mu:"지친 / 고갈된",me:"완전히 소진된, 기진맥진한",se:"Russell looked completely <b>exhausted</b> after the 70-lap race in Singapore, yet still delivered a flawless performance.",sk:"러셀은 싱가포르의 70랩 레이스 후 완전히 지쳐 보였지만, 여전히 완벽한 퍼포먼스를 선보였다."},
+{word:"retrieval",pos:"n.",mu:"회수 / 검색",me:"정보·물건을 되찾거나 불러오는 행위",se:"The <b>retrieval</b> of crucial data from Russell's sensors helped engineers fine-tune the setup before qualifying.",sk:"러셀 센서에서 중요한 데이터를 회수한 덕분에 엔지니어들은 예선 전에 셋업을 미세 조정할 수 있었다."},
+{word:"challenge",pos:"v. / n.",mu:"어려움을 제기하다 / 도전하다",me:"이의를 제기하다 / 난제, 도전 과제",se:"Russell has repeatedly <b>challenged</b> his engineers to think differently, pushing Mercedes forward.",sk:"러셀은 엔지니어들에게 다르게 생각하도록 반복적으로 도전장을 던지며 메르세데스를 앞으로 이끌었다."},
+{word:"marginalize",pos:"v.",mu:"소외시키다",me:"중심에서 밀어내다, 주변화하다",se:"Russell refused to let setbacks <b>marginalize</b> him, consistently proving his value with sharp feedback.",sk:"러셀은 어떤 역경도 자신을 소외시키도록 내버려두지 않았고, 날카로운 피드백으로 가치를 증명했다."},
+{word:"fluctuate",pos:"v.",mu:"변동하다 / 오르내리다",me:"불규칙하게 변하다",se:"Tyre temperatures <b>fluctuate</b> dramatically around Monaco, making Russell's smooth style a key advantage.",sk:"모나코에서는 타이어 온도가 극적으로 변동하기 때문에 러셀의 부드러운 드라이빙이 핵심 이점이 된다."},
+{word:"reasonable",pos:"adj.",mu:"적당한 / 괜찮은",me:"합리적인, 이치에 맞는",se:"It was <b>reasonable</b> to expect Russell to close the gap after Mercedes' strong pre-season.",sk:"메르세데스의 강력한 프리시즌을 보면 러셀이 격차를 좁힐 것이라고 기대하는 것이 합리적이었다."},
+{word:"process",pos:"v. / n.",mu:"처리하다",me:"과정, 절차 / 가공·처리하다",se:"Russell's ability to <b>process</b> radio data while fighting wheel-to-wheel sets him apart.",sk:"러셀이 휠투휠 배틀 중 무선 데이터를 처리하는 능력은 그를 다른 드라이버들과 차별화한다."},
+{word:"stabilize",pos:"v.",mu:"안정화하다 / 안정시키다",me:"안정된 상태로 만들거나 유지하다",se:"Russell worked with engineers to <b>stabilize</b> the W15's unpredictable rear-end behaviour.",sk:"러셀은 엔지니어들과 협력해 W15의 예측 불가능한 후미 동작을 안정화했다."},
+{word:"implicit",pos:"adj.",mu:"암묵적인 / 내포된 / 절대적인",me:"명시되지 않지만 내포된, 암묵적인",se:"There was an <b>implicit</b> understanding within Mercedes that Russell would be the main title contender.",sk:"러셀이 주요 우승 후보가 될 것이라는 암묵적인 합의가 메르세데스 내부에 있었다."},
+{word:"distant",pos:"adj.",mu:"거리를 두다",me:"먼, 멀리 있는 / 냉담한",se:"A podium once seemed <b>distant</b> for Russell during his three difficult seasons at Williams.",sk:"윌리엄스에서의 힘든 3시즌 동안 포디엄은 러셀에게 멀게만 느껴졌다."},
+{word:"advance",pos:"v. / n.",mu:"발전 / 진화하다",me:"전진하다, 나아가다 / 사전의",se:"Mercedes continues to <b>advance</b> their floor design, giving Russell a faster car each race.",sk:"메르세데스는 플로어 설계를 계속 발전시키며 매 레이스마다 러셀에게 더 빠른 차를 제공한다."},
+{word:"effect",pos:"n.",mu:"결과",me:"효과, 영향 / 결과로서 일어나는 것",se:"The <b>effect</b> of Russell's precise feedback was visible in the car's dramatically improved balance.",sk:"러셀의 정밀한 피드백의 결과는 차량의 극적으로 개선된 밸런스에서 분명히 드러났다."},
+{word:"willing",pos:"adj.",mu:"자발적인 / 기꺼이",me:"기꺼이 하려는, 마다하지 않는",se:"Russell has always been <b>willing</b> to put in extra simulator hours to help the team.",sk:"러셀은 팀을 돕기 위해 기꺼이 추가 시뮬레이터 시간을 투자해 왔다."},
+{word:"notably",pos:"adv.",mu:"현저히 / 특히",me:"특별히 주목할 만하게, 눈에 띄게",se:"Russell has improved <b>notably</b> in wheel-to-wheel combat since his junior formula days.",sk:"러셀은 주니어 포뮬러 초기부터 휠투휠 전투 능력이 현저히 향상되었다."},
+{word:"advanced",pos:"adj.",mu:"고급의",me:"발전된, 선진적인 / 수준이 높은",se:"The <b>advanced</b> energy recovery system gives Russell a crucial boost out of slow corners.",sk:"고급 에너지 회수 시스템은 러셀이 저속 코너 출구에서 결정적인 가속을 제공한다."},
+{word:"attentive",pos:"adj.",mu:"주의를 기울이는",me:"세심한, 배려하는 / 집중하는",se:"Russell is remarkably <b>attentive</b> during debriefs, catching subtle patterns others miss.",sk:"러셀은 디브리핑 중 다른 사람들이 놓치는 미묘한 패턴을 포착할 만큼 매우 세심하다."},
+{word:"surrender",pos:"v. / n.",mu:"항복하다 / 넘겨주다 / 양보",me:"포기하다, 내어주다 / 투항",se:"Russell refused to <b>surrender</b> third place, defending against a car on fresher tyres.",sk:"러셀은 더 새로운 타이어를 장착한 차에 맞서 뛰어난 수비로 3위 자리를 내주기를 거부했다."},
+{word:"biological",pos:"adj.",mu:"생물학적인",me:"생물의, 생물학에 관한",se:"Scientists monitor <b>biological</b> markers in Russell's blood to ensure peak condition.",sk:"스포츠 과학자들은 혹독한 F1 일정 내내 러셀의 생물학적 지표를 모니터링한다."},
+{word:"breed",pos:"v. / n.",mu:"번식하다 / 음모를 꾸미다 / 품종",me:"낳다, 기르다 / 특정 유형의 사람이나 집단",se:"George Russell represents a new <b>breed</b> of F1 driver — analytically gifted and professional.",sk:"조지 러셀은 분석적 재능과 끝없는 프로페셔널리즘을 갖춘 새로운 유형의 F1 드라이버를 대표한다."},
+{word:"unionism",pos:"n.",mu:"노동조합주의",me:"노조 원칙 또는 운동",se:"The spirit of <b>unionism</b> at Mercedes means Russell and engineers operate as one unit.",sk:"메르세데스의 단결 정신 덕분에 러셀과 엔지니어들은 긴밀한 하나의 팀으로 움직인다."},
+{word:"found",pos:"v.",mu:"세우다 / 근거를 두다",me:"설립하다, 창설하다 / ~에 기반을 두다",se:"Russell's success was <b>founded</b> on years of hard work before anyone knew his name.",sk:"러셀의 성공은 아무도 그의 이름을 알기 전 수년간의 노력 위에 세워진 것이다."},
+{word:"contaminate",pos:"v.",mu:"오염시키다 / 악영향을 미치다",me:"불순물이 섞이게 하다 / 나쁜 영향을 주다",se:"An oil leak threatened to <b>contaminate</b> Russell's rear tyres, forcing an early pit stop.",sk:"오일 누출이 러셀의 뒤쪽 타이어를 오염시킬 위협을 가해 팀이 일찍 피트인할 수밖에 없었다."},
+{word:"limit",pos:"v. / n.",mu:"제한하다",me:"한계, 한도 / 한정짓다",se:"The fuel flow <b>limit</b> is a constant factor Russell's engineers must account for in strategy.",sk:"연료 흐름 제한은 러셀의 엔지니어들이 전략에서 항상 고려해야 하는 요소다."},
+{word:"pervade",pos:"v.",mu:"만연하다 / 전체에 퍼지다",me:"가득 채우다, 스며들다",se:"Calm determination seemed to <b>pervade</b> Russell's approach despite enormous pressure.",sk:"엄청난 압박에도 불구하고 침착한 결의가 러셀의 접근 방식 전반에 스며드는 것 같았다."},
+{word:"stock",pos:"n. / v.",mu:"기초 / 주식 / 재고 / 갖추다",me:"재고, 비축량 / 주식 / 혈통",se:"Mercedes put great <b>stock</b> in Russell's technical insight, as valuable as his raw speed.",sk:"메르세데스는 러셀의 기술적 통찰을 매우 중시하며, 그것이 속도만큼이나 중요하다고 믿는다."},
+{word:"navigate",pos:"v.",mu:"처리하다 / 탐색하다",me:"항해하다 / 복잡한 상황을 헤쳐나가다",se:"Russell had to <b>navigate</b> a chaotic Safety Car restart, threading his W15 through gaps.",sk:"러셀은 혼란스러운 세이프티카 리스타트를 헤쳐나가며 W15를 틈새로 밀어 넣었다."},
+{word:"appliance",pos:"n.",mu:"가전제품",me:"장치, 기기 / 적용, 응용",se:"Every <b>appliance</b> in Mercedes' factory, from CNC machines to wind tunnels, serves Russell.",sk:"CNC 기계에서 풍동까지 메르세데스 공장의 모든 장치는 러셀에게 더 빠른 차를 주기 위해 존재한다."},
+{word:"regard",pos:"n. / v.",mu:"존경 / 관심 / 고려",me:"(~으로) 여기다 / 배려, 존중",se:"Russell is held in high <b>regard</b> by engineers for his precise technical debriefs.",sk:"러셀은 정밀한 기술 디브리핑으로 패독 전역의 엔지니어들로부터 높은 존경을 받고 있다."},
+{word:"attentive to",pos:"phrase",mu:"배려하는",me:"~에 주의를 기울이는, ~을 잘 챙기는",se:"Russell is always <b>attentive to</b> his mechanics' wellbeing before key sessions.",sk:"러셀은 항상 정비사들의 안녕에 세심한 관심을 기울이며 중요한 세션 전에 팀을 하나로 모은다."},
+{word:"certify",pos:"v.",mu:"증명하다",me:"공식적으로 인증하다, 보증하다",se:"The FIA must <b>certify</b> that Russell's chassis meets all crash standards before competition.",sk:"FIA는 러셀의 섀시가 경기에 사용되기 전에 모든 충돌 구조 기준을 충족한다는 것을 인증해야 한다."},
+{word:"statement",pos:"n.",mu:"진술 / 성명",me:"공식 발표 / 은행 명세서 / 주장",se:"Russell's dominant qualifying lap was a powerful <b>statement</b>: Mercedes was back.",sk:"러셀의 압도적인 예선 랩은 강력한 선언이었다: 메르세데스가 돌아왔다는 것을."},
+{word:"intensify",pos:"v.",mu:"심해지다 / 강화하다",me:"강도가 높아지다 = heighten",se:"The title battle began to <b>intensify</b> as Russell closed the gap to within five points.",sk:"러셀이 5점 이내로 격차를 좁히면서 우승 경쟁이 치열해지기 시작했다."},
+{word:"ambiguous",pos:"adj.",mu:"모호한",me:"두 가지 이상의 의미로 해석될 수 있는",se:"The team radio was deliberately <b>ambiguous</b>, giving rivals no clues about strategy.",sk:"팀 라디오는 의도적으로 모호하게 표현되어 라이벌들에게 전략에 대한 단서를 주지 않았다."},
+{word:"efficacy",pos:"n.",mu:"효능 / 효율",me:"효과가 있음, 효력",se:"The <b>efficacy</b> of Russell's new technique was confirmed by a 0.3-second lap improvement.",sk:"러셀의 새로운 기법의 효능은 랩타임 0.3초 단축으로 확인되었다."},
+{word:"intense",pos:"adj.",mu:"극한 / 치열한",me:"강렬한, 격렬한 / 감정·감각이 매우 강한",se:"The <b>intense</b> heat of Bahrain demanded extreme focus from Russell over 57 laps.",sk:"바레인의 극심한 열기는 57랩 레이스 내내 러셀에게 극도의 집중을 요구했다."},
+{word:"intensive",pos:"adj.",mu:"강렬한 / 집중적인",me:"집중적인, 철저한",se:"Russell underwent an <b>intensive</b> training camp over winter to prepare for the new season.",sk:"러셀은 새 시즌에 대비하기 위해 겨울 동안 집중적인 훈련 캠프를 진행했다."},
+{word:"captive",pos:"adj. / n.",mu:"사로잡힌 / 포로",me:"포획된, 감금된 / 선택의 여지가 없는",se:"Millions of fans were held <b>captive</b> by Russell's breathtaking overtake on the final lap.",sk:"수백만 팬들이 마지막 랩에서 러셀의 숨막히는 추월에 완전히 사로잡혔다."},
+{word:"individual",pos:"adj. / n.",mu:"개인 / 개인적인",me:"독자적인, 특유의 / 개인",se:"Russell's <b>individual</b> style — feather-light steering with aggressive braking — is one of a kind.",sk:"깃털처럼 가벼운 스티어링과 공격적인 제동을 결합한 러셀의 개성적인 스타일은 독보적이다."},
+{word:"facility",pos:"n.",mu:"시설 / 설비 / 재능 / 기능 / 특징",me:"시설, 설비 / 재능, 능력",se:"Mercedes' <b>facility</b> in Brackley gives Russell every resource to chase the championship.",sk:"브래클리에 있는 메르세데스의 시설은 러셀에게 챔피언십 추격에 필요한 모든 자원을 제공한다."},
+{word:"distinguished",pos:"adj.",mu:"유명한",me:"저명한, 뛰어난 / 품위 있는",se:"Russell joins a <b>distinguished</b> list of Mercedes drivers who have topped an F1 podium.",sk:"러셀은 F1 포디엄 최상단에 올라선 저명한 메르세데스 드라이버 명단에 이름을 올렸다."},
+{word:"startled",pos:"adj.",mu:"깜짝 놀란",me:"갑작스러운 충격으로 놀란, 당황한",se:"Even seasoned paddock insiders were <b>startled</b> by Russell's pole position lap time.",sk:"베테랑 패독 인사들조차 러셀의 폴포지션 랩타임에 깜짝 놀랐다."},
+{word:"calculate",pos:"v.",mu:"계산하다 = estimate / 구체화",me:"추정하다, 산출하다 / 의도적으로 꾀하다",se:"Russell's engineers <b>calculated</b> the optimal undercut window to the nearest tenth.",sk:"러셀의 엔지니어들은 최적의 언더컷 윈도우를 0.1초 단위까지 계산했다."},
+{word:"collective",pos:"adj. / n.",mu:"공동의 / 공통사항",me:"집합적인, 단체의 / 집단, 공동체",se:"The <b>collective</b> effort of everyone at Mercedes contributes to Russell's race day results.",sk:"메르세데스의 모든 사람의 공동 노력이 레이스 데이 러셀의 결과에 기여한다."},
+{word:"proceed",pos:"v.",mu:"계속하다",me:"진행하다, 나아가다",se:"Officials confirmed the race would <b>proceed</b>, giving Russell time to refocus for restart.",sk:"레이스가 계속 진행될 것이라는 확인이 내려졌고, 러셀은 리스타트를 위해 집중력을 재정비했다."},
+{word:"occasion",pos:"n.",mu:"원인 / 기회 / 행사",me:"특별한 사건, 경우 / 기회, 계기",se:"Russell rose to the <b>occasion</b> at wet Spa, delivering one of the finest laps of his career.",sk:"러셀은 젖은 스파 조건에서 최고의 실력을 발휘해 경력 최고의 랩을 선보였다."},
+{word:"convince",pos:"v.",mu:"납득시키다 / 설득하다",me:"확신시키다, 이해시키다",se:"Russell's consistency eventually <b>convinced</b> Mercedes he deserved full number-one status.",sk:"러셀의 일관된 퍼포먼스는 메르세데스가 그에게 1번 드라이버 지위를 부여해야 한다고 납득시켰다."},
+{word:"conviction",pos:"n.",mu:"확신",me:"강한 신념 / 유죄 판결",se:"Russell's <b>conviction</b> that Mercedes would return to the front never wavered.",sk:"메르세데스가 그리드 최전선으로 돌아올 것이라는 러셀의 확신은 힘든 시기에도 흔들리지 않았다."},
+{word:"defect",pos:"n. / v.",mu:"결함 / 귀선고",me:"결점, 흠 / 탈당·탈주하다",se:"A microscopic <b>defect</b> in the gearbox was found after Russell's retirement.",sk:"러셀의 리타이어 후 기어박스의 미세한 결함이 발견되었다."},
+{word:"subconscious",pos:"adj. / n.",mu:"잠재의식",me:"잠재의식적인, 무의식적인",se:"Years of karting built a <b>subconscious</b> feel for car balance no simulator can replicate.",sk:"수년간의 카팅이 러셀 안에 어떤 시뮬레이터도 복제할 수 없는 잠재의식적 차량 감각을 쌓아주었다."},
+{word:"ascent",pos:"n.",mu:"오르기 / 상승",me:"상승, 오름 / 성장, 출세",se:"Russell's <b>ascent</b> from karting champion to F1 race winner is one of motorsport's great stories.",sk:"카팅 챔피언에서 F1 레이스 우승까지 러셀의 상승 스토리는 모터스포츠 역사의 훌륭한 이야기 중 하나다."},
+{word:"assent",pos:"n. / v.",mu:"승인 / 동의하다",me:"공식적인 동의, 승인 / 찬성하다",se:"With the team principal's <b>assent</b>, Russell was free to push the experimental tyre.",sk:"팀 대표의 승인 하에 러셀은 실험적인 타이어를 한계까지 밀어붙일 자유를 얻었다."},
+{word:"ultimate",pos:"adj.",mu:"근본적인 / 최고의",me:"최종적인, 궁극적인 → 세부화함",se:"Winning the World Championship remains the <b>ultimate</b> goal for Russell.",sk:"월드 챔피언십 우승은 러셀의 궁극적인 목표이며, 그 외의 모든 것은 그 순간을 위한 준비일 뿐이다."},
+{word:"specific",pos:"adj.",mu:"구체화인 → 세부화함",me:"특정한, 구체적인, 명확한",se:"Russell gave very <b>specific</b> feedback on understeer, helping engineers pinpoint the issue.",sk:"러셀은 언더스티어에 대해 매우 구체적인 피드백을 제공하여 정확한 문제를 찾아낼 수 있도록 했다."},
+];
+let words=W.map(w=>({...w,date:ts(),wc:0}));
+let wrong=[],ci=0,sf=false,ord=words.map((_,i)=>i);
+function ts(){return new Date().toISOString().slice(0,10);}
+function fd(s){const d=new Date(s);return `${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일`;}
+function tl(){return new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric'});}
+let tt;
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2000);}
+function goPage(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+  document.getElementById('page-'+id).classList.add('on');
+  btn.classList.add('on');
+  if(id==='study')rs();
+  if(id==='review'){rvi=0;brv();}
+  if(id==='archive')rarc();
+  if(id==='add')rta();
 }
-
-// 단어 섞기 함수
-function shuffle(array) { return array.sort(() => Math.random() - 0.5); }
-
-// 학습 시작 (모드 설정)
-function startStudy(targetWords, modeName) {
-  if (targetWords.length === 0) {
-    toast("출력할 단어가 없습니다.");
-    return;
-  }
-  currentSessionWords = shuffle([...targetWords]);
-  ci = 0;
-  document.getElementById('study-mode-title').textContent = modeName;
-  goPage('study');
-  renderStudy();
-}
-
-function renderStudy() {
-  if (currentSessionWords.length === 0) {
-    document.getElementById('fw').textContent = "공부 완료! 🏁";
-    return;
-  }
-  const w = currentSessionWords[ci];
-  document.getElementById('fw').textContent = w.word;
-  document.getElementById('fbw').textContent = w.word;
-  document.getElementById('fbm').textContent = w.mu;
-  document.getElementById('fbs').innerHTML = w.se || "예문이 없습니다.";
-  document.getElementById('fbsk').textContent = w.sk || "해석이 없습니다.";
+function dw(){return ord.map(i=>words[i]);}
+function rs(){
+  document.getElementById('tlabel').textContent=tl();
+  const d=dw();if(!d.length)return;
+  if(ci>=d.length)ci=0;
+  const w=d[ci];
+  document.getElementById('fw').textContent=w.word;
+  document.getElementById('fp').textContent=w.pos;
+  document.getElementById('fbw').textContent=w.word;
+  document.getElementById('fbp').textContent=w.pos;
+  document.getElementById('fbm').textContent=w.mu;
+  document.getElementById('fbe').textContent=w.me;
+  document.getElementById('fbs').innerHTML=w.se;
+  document.getElementById('fbsk').textContent=w.sk;
   document.getElementById('fbsk').classList.remove('on');
+  document.getElementById('fbtkr').textContent='🇰🇷 한글 번역 보기';
+  document.getElementById('mcnt').textContent=`${ci+1} / ${d.length}`;
+  document.getElementById('mprog').style.width=`${((ci+1)/d.length)*100}%`;
   document.getElementById('mflip').classList.remove('f');
-  document.getElementById('study-count').textContent = `${ci + 1} / ${currentSessionWords.length}`;
-  document.getElementById('mprog').style.width = `${((ci + 1) / currentSessionWords.length) * 100}%`;
 }
-
-function mark(known) {
-  if (currentSessionWords.length === 0) return;
-  if (known) {
-    toast("✅ 마스터!");
-    currentSessionWords.splice(ci, 1);
-    if (ci >= currentSessionWords.length) ci = 0;
-  } else {
-    toast("❌ 오답!");
-    ci = (ci + 1) % currentSessionWords.length;
+function flipMain(){document.getElementById('mflip').classList.toggle('f');}
+function tkr(sid,bid){
+  const s=document.getElementById(sid),b=document.getElementById(bid);
+  s.classList.toggle('on');b.textContent=s.classList.contains('on')?'🇰🇷 번역 숨기기':'🇰🇷 한글 번역 보기';
+}
+function mv(d){const dws=dw();ci=(ci+d+dws.length)%dws.length;rs();}
+function toggleShuffle(){
+  sf=!sf;const b=document.getElementById('sfbtn');
+  if(sf){const a=words.map((_,i)=>i);for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}ord=a;b.textContent='🔀 섞는 중';b.classList.add('on');toast('🔀 섞였어요!');}
+  else{ord=words.map((_,i)=>i);b.textContent='🔀 섞기';b.classList.remove('on');toast('📋 원래 순서로!');}
+  ci=0;rs();
+}
+function mark(v){
+  const w=dw()[ci];if(!w)return;
+  if(v==='know'){wrong=wrong.filter(k=>k!==w.word);toast('✅ 오답에서 제거!');}
+  else{if(!wrong.includes(w.word))wrong.push(w.word);toast(v==='no'?'❌ 오답 추가!':'😅 오답 추가!');}
+  ubdg();mv(1);
+}
+function ubdg(){const b=document.getElementById('rvbdg');b.textContent=wrong.length;b.style.display=wrong.length?'flex':'none';}
+/* REVIEW */
+let rvi=0;
+function brv(){
+  const ww=words.filter(w=>wrong.includes(w.word));
+  const c=document.getElementById('rvcont');
+  if(!ww.length||rvi>=ww.length){
+    c.innerHTML=`<div class="empty"><div class="ico">🏆</div>${!ww.length?'오답 단어가 없어요!<br>GR처럼 완벽해요 🏁':'오답 단어를 모두 복습했어요!'}</div>`;return;
   }
-  renderStudy();
+  const w=ww[rvi];const s1='rvsk'+rvi,b1='rvtkr'+rvi;
+  c.innerHTML=`<div class="top" style="margin-bottom:13px"><div class="stit">🔥 오답 노트</div><div class="dtag">${rvi+1} / ${ww.length}</div></div>
+  <div class="prog"><div class="pb" style="width:${((rvi+1)/ww.length)*100}%"></div></div>
+  <div class="scene"><div class="flipper" id="rvf" onclick="this.classList.toggle('f')">
+    <div class="face fr"><div class="fhint">단어</div><div class="wbig">${w.word}</div><div class="wpsm">${w.pos}</div><div class="taph">👆 탭해서 뜻 보기</div></div>
+    <div class="face bk"><div class="bword">${w.word}</div><div class="bpos">${w.pos}</div><div class="mmain">${w.mu}</div><div class="mextra">${w.me}</div>
+      <div class="sbox"><div class="sen">${w.se}</div><div class="skr" id="${s1}">${w.sk}</div>
+        <button class="tkrb" id="${b1}" onclick="event.stopPropagation();tkr('${s1}','${b1}')">🇰🇷 한글 번역 보기</button></div></div>
+  </div></div>
+  <div class="vrow" style="margin-top:11px">
+    <button class="vb vknow" onclick="rvm('know')">✅ 이제 알아요</button>
+    <button class="vb vno" onclick="rvm('no')">❌ 아직 모르겠어</button>
+  </div>`;
 }
-
-function processAdd() {
-  const text = document.getElementById('addinp').value.trim();
-  if(!text) return;
-  const lines = text.split('\n');
-  let count = 0;
-  lines.forEach(line => {
-    const regex = /([a-zA-Z\s'-]+)\s+([가-힣\s/(),]+)\s+([a-zA-Z\s'.,!?]+)\s+([가-힣\s'.,!?]+)/;
-    const match = line.match(regex);
-    if (match) {
-      const [_, word, mu, se, sk] = match.map(s => s.trim());
-      words.push({ word, mu, se: se.replace(new RegExp(word, 'gi'), `<b>$&</b>`), sk, date: ts() });
-      count++;
-    } else {
-      const simpleMatch = line.match(/([a-zA-Z\s'-]+)\s+([가-힣\s/(),]+)/);
-      if (simpleMatch) {
-        const [_, word, mu] = simpleMatch.map(s => s.trim());
-        words.push({ word, mu, se: `<b>${word}</b> is vital in F1.`, sk: `${mu}은 F1에서 중요하다.`, date: ts() });
-        count++;
-      }
-    }
-  });
-  save();
-  document.getElementById('addinp').value = '';
-  toast(`${count}개 단어 추가 완료!`);
-  renderArchive();
+function rvm(v){
+  const ww=words.filter(w=>wrong.includes(w.word));
+  if(v==='know'){wrong=wrong.filter(k=>k!==ww[rvi].word);toast('✅ 오답 제거!');}
+  else toast('❌ 다음에 또 복습해요!');
+  ubdg();rvi++;brv();
 }
-
-function renderArchive() {
-  const list = document.getElementById('arclist');
-  const groups = {};
-  words.forEach(w => { groups[w.date] = groups[w.date] || []; groups[w.date].push(w); });
-
-  list.innerHTML = Object.keys(groups).sort().reverse().map(date => `
-    <div class="folder">
-      <div class="fhdr" onclick="toggleFolder(this)">
-        <div>📅 ${date} <span style="color:var(--mu);font-size:.7rem;margin-left:10px;">${groups[date].length} Words</span></div>
-        <span>▼</span>
-      </div>
-      <div class="fbody">
-        <div class="mrow">
-          <button class="mbtn blue" onclick="startStudy(getWordsByDate('${date}'), '${date} TEST')">📝 시험 보기</button>
-          <button class="mbtn" onclick="this.parentElement.nextElementSibling.classList.toggle('open')">📋 목록 보기</button>
-        </div>
-        <div class="word-list-inner" style="display:none;">
-          ${groups[date].map(w => `
-            <div class="witem">
-              <span><b>${w.word}</b> ${w.mu}</span>
-              <button onclick="deleteWord('${w.word}')" style="background:none;border:none;color:var(--ac2);cursor:pointer;">🗑</button>
-            </div>
-          `).join('')}
-        </div>
-      </div>
+/* ARCHIVE */
+function rarc(){
+  const bd={};words.forEach(w=>{if(!bd[w.date])bd[w.date]=[];bd[w.date].push(w);});
+  const dates=Object.keys(bd).sort((a,b)=>b.localeCompare(a));
+  document.getElementById('arclist').innerHTML=dates.map(dt=>`
+  <div class="folder" id="fold-${dt}">
+    <div class="fhdr" onclick="tgf('${dt}')">
+      <div class="fleft"><span class="fico" id="fico-${dt}">📁</span>
+        <div><div class="fdate">${fd(dt)}</div>
+          <div class="fmeta">단어 ${bd[dt].length}개 · 오답 ${bd[dt].filter(w=>wrong.includes(w.word)).length}개</div></div></div>
+      <span class="fchev" id="fchev-${dt}">▶</span>
     </div>
-  `).join('');
+    <div class="fbody" id="fbody-${dt}">
+      <div class="mrow">
+        <button class="mbtn ms" onclick="fss('${dt}')"><span class="mico">📚</span>단어 학습</button>
+        <button class="mbtn mt" onclick="fqs('${dt}')"><span class="mico">✏️</span>시험 보기</button>
+      </div>
+      <div class="wlist">${bd[dt].map(w=>`
+        <div class="witem${wrong.includes(w.word)?' ww':''}">
+          <div><div><span class="wword">${w.word}</span>${wrong.includes(w.word)?'<span class="wtag">오답</span>':''}</div>
+            <div class="wmean">${w.mu}</div></div>
+          <button class="wdel" onclick="dw2('${w.word.replace(/'/g,"\\'")}')">🗑</button>
+        </div>`).join('')}</div>
+    </div>
+  </div>`).join('');
+}
+function tgf(dt){
+  const body=document.getElementById('fbody-'+dt);
+  const chev=document.getElementById('fchev-'+dt);
+  const ico=document.getElementById('fico-'+dt);
+  const o=body.classList.contains('open');
+  body.classList.toggle('open');chev.classList.toggle('open',!o);ico.textContent=o?'📁':'📂';
+}
+/* FOLDER STUDY */
+let fsi=0,fsw=[],fsd='';
+function fss(dt){
+  const bd={};words.forEach(w=>{if(!bd[w.date])bd[w.date]=[];bd[w.date].push(w);});
+  fsw=bd[dt]||[];fsi=0;fsd=dt;
+  document.getElementById('fbody-'+dt).innerHTML=bfsh(dt);
+}
+function bfsh(dt){
+  if(!fsw.length)return'<div class="empty"><div class="ico">📭</div>단어 없음</div>';
+  const w=fsw[fsi];const s2='fssk',b2='fstkr';
+  return `<button class="bbtn" onclick="btf('${dt}')">← 목록으로</button>
+  <div class="top" style="margin-bottom:11px"><div class="stit" style="font-size:.95rem">단어 학습</div>
+    <div class="dtag">${fsi+1} / ${fsw.length}</div></div>
+  <div class="prog"><div class="pb" style="width:${((fsi+1)/fsw.length)*100}%"></div></div>
+  <div class="scene"><div class="flipper" id="fsf" onclick="this.classList.toggle('f')">
+    <div class="face fr"><div class="fhint">단어</div><div class="wbig">${w.word}</div><div class="wpsm">${w.pos}</div><div class="taph">👆 탭해서 뜻 보기</div></div>
+    <div class="face bk"><div class="bword">${w.word}</div><div class="bpos">${w.pos}</div><div class="mmain">${w.mu}</div><div class="mextra">${w.me}</div>
+      <div class="sbox"><div class="sen">${w.se}</div><div class="skr" id="${s2}">${w.sk}</div>
+        <button class="tkrb" id="${b2}" onclick="event.stopPropagation();tkr('${s2}','${b2}')">🇰🇷 한글 번역 보기</button></div></div>
+  </div></div>
+  <div class="cnav">
+    <button class="arr" onclick="fsg(-1)" ${fsi===0?'style="opacity:.4"':''}>← 이전</button>
+    <span class="cnt">${fsi+1} / ${fsw.length}</span>
+    <button class="arr" onclick="fsg(1)" ${fsi===fsw.length-1?'style="opacity:.4"':''}>다음 →</button>
+  </div>`;
+}
+function fsg(d){const n=fsi+d;if(n<0||n>=fsw.length)return;fsi=n;document.getElementById('fbody-'+fsd).innerHTML=bfsh(fsd);}
+/* FOLDER QUIZ */
+let fqi=0,fqw=[],fqs2=[],fqsc=0,fqch=null,fqd='';
+function shar(a){const r=[...a];for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]];}return r;}
+function fqs(dt){
+  const bd={};words.forEach(w=>{if(!bd[w.date])bd[w.date]=[];bd[w.date].push(w);});
+  fqd=dt;fqw=bd[dt]||[];fqs2=shar([...fqw]);fqi=0;fqsc=0;fqch=null;
+  document.getElementById('fbody-'+dt).innerHTML=bfqh(dt);
+}
+function bfqh(dt){
+  if(fqi>=fqs2.length){const s=fqsc,t=fqs2.length;return`
+    <button class="bbtn" onclick="btf('${dt}')">← 목록으로</button>
+    <div class="qdone"><div style="font-size:2.4rem;margin-bottom:9px">${s===t?'🏆':s>=t*.7?'🎉':'📚'}</div>
+      <div class="qscore">${s} / ${t}</div>
+      <div class="qmsg">${s===t?'완벽해요! GR처럼 실수 없이 🏁':s>=t*.7?'잘했어요! 조금만 더 연습하면 완벽해요 💪':'더 복습이 필요해요. GR도 처음엔 연습이 필요했어요 🔄'}</div>
+      <button class="qrst" onclick="fqs('${dt}')">🔄 다시 풀기</button></div>`;}
+  const qw=fqs2[fqi];
+  const opts=shar([qw,...shar(words.filter(w=>w.word!==qw.word)).slice(0,3)]);
+  const oh=opts.map(o=>{
+    let cls='qopt';
+    if(fqch){cls+=o.word===qw.word?' qok':o.word===fqch?' qno':'';}
+    return`<button class="${cls}" onclick="fqp('${o.word.replace(/'/g,"\\'")}','${dt}')" ${fqch?'disabled':''}>${o.mu}</button>`;
+  }).join('');
+  return`<button class="bbtn" onclick="btf('${dt}')">← 목록으로</button>
+  <div class="qprog">${fqi+1} / ${fqs2.length} · ✅ ${fqsc}개 맞춤</div>
+  <div class="prog"><div class="pb" style="width:${((fqi+1)/fqs2.length)*100}%"></div></div>
+  <div class="qq">다음 단어의 뜻은?<br><b>${qw.word}</b><small>${qw.pos}</small></div>
+  <div class="qopts">${oh}</div>
+  ${fqch?`<button class="qnxt" onclick="fqn('${dt}')">${fqi+1>=fqs2.length?'결과 보기 →':'다음 →'}</button>`:''}`;
+}
+function fqp(word,dt){if(fqch)return;fqch=word;if(word===fqs2[fqi].word)fqsc++;document.getElementById('fbody-'+dt).innerHTML=bfqh(dt);}
+function fqn(dt){fqi++;fqch=null;document.getElementById('fbody-'+dt).innerHTML=bfqh(dt);}
+function btf(dt){rarc();const b=document.getElementById('fbody-'+dt),c=document.getElementById('fchev-'+dt),i=document.getElementById('fico-'+dt);if(b){b.classList.add('open');c.classList.add('open');i.textContent='📂';}}
+function dw2(word){
+  if(!confirm(`"${word}" 를 삭제할까요?`))return;
+  words=words.filter(w=>w.word!==word);wrong=wrong.filter(k=>k!==word);
+  ord=words.map((_,i)=>i);ci=0;ubdg();rarc();toast('🗑 삭제됐어요');
+}
+/* ADD */
+function rta(){
+  const td=ts(),tw=words.filter(w=>w.date===td);
+  const sec=document.getElementById('tadded'),list=document.getElementById('tlist');
+  if(!tw.length){sec.style.display='none';return;}
+  sec.style.display='block';
+  list.innerHTML=tw.map(w=>`<div class="ti"><div class="tw">${w.word}</div><div class="tm">${w.mu}</div></div>`).join('');
 }
 
-function toggleFolder(el) { el.nextElementSibling.classList.toggle('open'); }
-function getWordsByDate(date) { return words.filter(w => w.date === date); }
+const WORKER_URL = ‘https://gr-voca.nixxiszzz.workers.dev/’;
 
-function deleteWord(wordStr) {
-  if(!confirm('삭제할까요?')) return;
-  words = words.filter(w => w.word !== wordStr);
-  save();
-  renderArchive();
+// 한글 포함 여부
+function isKo(s){return /[\uAC00-\uD7A3]/.test(s);}
+// 영문 문장 여부 (단어 3개 이상)
+function isEnSentence(s){return /^[a-zA-Z<]/.test(s.trim())&&s.trim().split(/\s+/).length>=3;}
+// 품사 패턴
+function isPos(s){return /^(v.|n.|adj.|adv.|phrasal|phrase|prep.|conj.)/.test(s.trim());}
+
+function parseInput(raw){
+// 줄바꿈 또는 / 로 분리
+let parts;
+if(raw.includes(’\n’)){
+parts = raw.split(’\n’).map(s=>s.trim()).filter(Boolean);
+} else if(raw.includes(’/’)){
+parts = raw.split(’/’).map(s=>s.trim()).filter(Boolean);
+} else {
+parts = [raw.trim()];
 }
 
-// 초기 실행
-if(words.length > 0) startStudy(words, "ALL WORDS");
+let word=’’,pos=’’,mu=’’,me=’’,se=’’,sk=’’;
+const engWords=[],koWords=[],enSents=[],koSents=[];
+
+parts.forEach(p=>{
+const t=p.trim();
+if(!t) return;
+if(isPos(t)) pos=t;
+else if(isKo(t)){
+if(t.split(/\s+/).length>=4||t.length>14) koSents.push(t);
+else koWords.push(t);
+} else {
+if(isEnSentence(t)) enSents.push(t);
+else engWords.push(t);
+}
+});
+
+word = engWords[0]||’’;
+mu   = koWords[0]||’’;
+me   = koWords[1]||’’;
+sk   = koSents[0]||’’;
+if(enSents.length){
+se = enSents[0];
+if(word && !se.includes(’<b>’)){
+const re=new RegExp(`(${word.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, ‘gi’);
+se=se.replace(re,’<b>$1</b>’);
+}
+}
+return {word:word.toLowerCase(),pos,mu,me,se,sk};
+}
+
+async function addWord(){
+const raw=document.getElementById(‘addinp’).value.trim();
+if(!raw){toast(‘내용을 입력해주세요!’);return;}
+
+const parsed=parseInput(raw);
+if(!parsed.word){toast(‘영어 단어를 찾지 못했어요!’);return;}
+
+// 뜻이 없으면 API로 자동 생성
+if(!parsed.mu){
+const btn=document.getElementById(‘addbtn’);
+btn.disabled=true;
+btn.innerHTML=’<span class="spin"></span>예문 생성 중…’;
+const apiKey=document.getElementById(‘apikey’).value.trim();
+if(!apiKey){toast(‘API 키를 입력해주세요!’);btn.disabled=false;btn.innerHTML=‘➕ 단어 추가’;return;}
+const prompt=`You are a vocabulary card generator for a Korean student learning English through F1/George Russell.
+Return a JSON object (NOT array) for this single word:
+
+- word: “${parsed.word}” (lowercase)
+- pos: part of speech string
+- mu: Korean meaning (short)
+- me: extra Korean note
+- se: F1/George Russell themed sentence with <b>${parsed.word}</b>
+- sk: Korean translation
+  Respond ONLY with valid JSON, no markdown.`;
+  try{
+  const res=await fetch(WORKER_URL,{method:‘POST’,
+  headers:{‘Content-Type’:‘application/json’,‘x-api-key’:apiKey},
+  body:JSON.stringify({model:‘claude-sonnet-4-20250514’,max_tokens:400,messages:[{role:‘user’,content:prompt}]})});
+  const data=await res.json();
+  const text=data.content.map(c=>c.text||’’).join(’’);
+  const p2=JSON.parse(text.replace(/`json|`/g,’’).trim());
+  Object.assign(parsed,p2);
+  }catch(e){toast(‘생성 실패. 뜻을 직접 써주세요!’);btn.disabled=false;btn.innerHTML=‘➕ 단어 추가’;return;}
+  btn.disabled=false;btn.innerHTML=‘➕ 단어 추가’;
+  }
+  
+  if(words.find(w=>w.word.toLowerCase()===parsed.word.toLowerCase())){toast(‘이미 있는 단어예요!’);return;}
+  words.push({…parsed,date:ts(),wc:0});
+  ord=words.map((_,i)=>i);
+  document.getElementById(‘addinp’).value=’’;
+  rta();
+  toast(`✅ "${parsed.word}" 추가됐어요!`);
+  }
+  /* SWIPE */
+  let tx=0,ty=0;
+  const msc=document.getElementById(‘mscene’);
+  msc.addEventListener(‘touchstart’,e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY;},{passive:true});
+  msc.addEventListener(‘touchend’,e=>{
+  const dx=e.changedTouches[0].clientX-tx,dy=e.changedTouches[0].clientY-ty;
+  if(Math.abs(dx)<50&&Math.abs(dy)<50)return;
+  if(Math.abs(dx)>=Math.abs(dy)){if(dx<0)mv(1);else mv(-1);}else flipMain();
+  },{passive:true});
+  /* INIT */
+  rs();ubdg();
+
 </script>
 </body>
 </html>
