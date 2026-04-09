@@ -434,7 +434,7 @@ fqd=dt;fqs2=shar([…(bd[dt]||[])]);fqi=0;fqsc=0;fqch=null;
 document.getElementById(‘fbody-’+dt).innerHTML=bfqh(dt);
 }
 function bfqh(dt){
-if(fqi>=fqs2.length){const s=fqsc,t=fqs2.length;return` <button class="bbtn" onclick="btf('${dt}')">← 목록으로</button> <div class="qdone"><div style="font-size:2.4rem;margin-bottom:9px">${s===t?'🏆':s>=t*.7?'🎉':'📚'}</div> <div class="qscore">${s} / ${t}</div> <div class="qmsg">${s===t?'완벽해요! GR처럼 실수 없이 🏁':s>=t*.7?'잘했어요! 💪':'더 복습이 필요해요 🔄'}</div> <button class="qrst" onclick="fqs('${dt}')">🔄 다시 풀기</button></div>`;}
+if(fqi>=fqs2.length){const s=fqsc,t=fqs2.length;return`<button class="bbtn" onclick="btf('${dt}')">← 목록으로</button><div class="qdone"><div style="font-size:2.4rem;margin-bottom:9px">${s===t?'🏆':s>=t*.7?'🎉':'📚'}</div><div class="qscore">${s} / ${t}</div><div class="qmsg">${s===t?'완벽해요! GR처럼 실수 없이 🏁':s>=t*.7?'잘했어요! 💪':'더 복습이 필요해요 🔄'}</div><button class="qrst" onclick="fqs('${dt}')">🔄 다시 풀기</button></div>`;}
 const qw=fqs2[fqi];
 const opts=shar([qw,…shar(words.filter(w=>w.word!==qw.word)).slice(0,3)]);
 const oh=opts.map(o=>{
@@ -490,7 +490,7 @@ Parse the input and extract vocabulary items. Return a JSON array. Each object:
 - se: string (F1/George Russell or George & Max rivalry themed sentence, wrap target word with <b> tags)
 - sk: string (Korean translation of the sentence)
   ALL sentences must be F1/Mercedes/George Russell or George-Max rivalry themed. Respond ONLY with valid JSON array, no markdown.
-  Input: ${raw}`; try{ const res=await fetch( `${WORKER}/?key=${encodeURIComponent(apiKey)}`, {method:'POST',headers:{'Content-Type':'application/json'}, body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})} ); const data=await res.json(); if(data.error){gen.innerHTML=`<div style="color:var(--ac2);font-size:.75rem;padding:10px;background:var(--card);border-radius:8px;margin-top:8px">${JSON.stringify(data.error)}</div>`;btn.disabled=false;return;} const text=data.candidates[0].content.parts[0].text; const parsed=JSON.parse(text.replace(/```json|```/g,'').trim()); const today=ts(); parsed.forEach(p=>{if(!words.find(w=>w.word.toLowerCase()===p.word.toLowerCase()))words.push({...p,date:today,wc:0});}); saveWords();ord=buildOrd(); document.getElementById('addinp').value='';gen.innerHTML='';rta();toast(`✅ ${parsed.length}개 단어 추가됐어요!`); }catch(e){ gen.innerHTML=`<div style="color:var(--ac2);font-size:.75rem;padding:10px;background:var(--card);border-radius:8px;margin-top:8px">오류: ${e.message}</div>`;
+  Input: ${raw}`; try{ const res=await fetch(`${WORKER}/?key=${encodeURIComponent(apiKey)}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})}); const data=await res.json(); if(data.error){gen.innerHTML=`<div style="color:var(--ac2);font-size:.75rem;padding:10px;background:var(--card);border-radius:8px;margin-top:8px">${JSON.stringify(data.error)}</div>`;btn.disabled=false;return;} const text=data.candidates[0].content.parts[0].text; const parsed=JSON.parse(text.replace(/```json|```/g,'').trim()); const today=ts(); parsed.forEach(p=>{if(!words.find(w=>w.word.toLowerCase()===p.word.toLowerCase()))words.push({...p,date:today,wc:0});}); saveWords();ord=buildOrd(); document.getElementById('addinp').value='';gen.innerHTML='';rta();toast(`✅ ${parsed.length}개 단어 추가됐어요!`); }catch(e){ gen.innerHTML=`<div style="color:var(--ac2);font-size:.75rem;padding:10px;background:var(--card);border-radius:8px;margin-top:8px">오류: ${e.message}</div>`;
   }
   btn.disabled=false;
   }
